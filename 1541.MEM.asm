@@ -1,7 +1,9 @@
 ; --------------------------------------------------------------------------------------------------------------------- ;
 ; VIC 1541 - Zeropage / Extended Zeropage / Stack / Vectors / Buffers
 ; --------------------------------------------------------------------------------------------------------------------- ;
-ZPAGE                       = $00               ;       Zeropage - JOB queue / Constants / Pointers / Work Area
+SystemConstants             .include "1541.DOS.const.asm" ; system constant definitions
+; --------------------------------------------------------------------------------------------------------------------- ;
+ZP_DOS                      = $00               ;       Zeropage - JOB queue / Constants / Pointers / Work Area
 ; --------------------------------------------------------------------------------------------------------------------- ;
 ; JOBSTCC0 - JOBSTCC5                           ;       Interface Main Program - Disc Controller
 ;                                               ;         main program writes 
@@ -343,7 +345,7 @@ BTAB_1                        = $53             ;
 BTAB_2                        = $54             ; 
 BTAB_3                        = $55             ; 
 BTAB_X                        = BTAB_3          ; 
-BTAB_LEN                    = BTABX - BTAB      ; 
+BTAB_LEN                    = BTAB_X - BTAB     ; 
 ; --------------------------------------------------------------------------------------------------------------------- ;
 ; Staging area for the 5 GCR bytes being converted from BIN (PUT4BG) or to BIN (GET4BG)
 ; --------------------------------------------------------------------------------------------------------------------- ;
@@ -368,8 +370,8 @@ AS_DFLT                       = $04             ;       twice this value must be
 ; --------------------------------------------------------------------------------------------------------------------- ;
 AF                          = $5f               ;       acceleration/deceleration factor
 AF_DFLT                       = $04             ;       value of DSKCNT(T1LH2) plus/minus value of AS times
-                                                ;       must not be: too low  ñ below ~12-20 (depends on drive mechanics)
-                                                ;                    too high ñ above 255
+                                                ;       must not be: too low  ‚Äì below ~12-20 (depends on drive mechanics)
+                                                ;                    too high ‚Äì above 255
 ; --------------------------------------------------------------------------------------------------------------------- ;
 ; Number of steps left to accelerate/decelerate when stepping the head
 ; --------------------------------------------------------------------------------------------------------------------- ;
@@ -1111,7 +1113,7 @@ CMDSIZ_MAX                    = CMDBUF_LEN      ;
 CMDSIZ_ME_LEN                 = $05             ;       M-E AdrLo AdrHi                     - Memory-Execute
 CMDSIZ_MR_LEN                 = $06             ;       M-R AdrLo AdrHi Num                 - Memory-Read
 CMDSIZ_MW_LEN                 = $06             ;       M-W AdrLo AdrHi Num(max $23)        - Memory-Write
-CMDSIZ_MW_MAX                 = CMDBUF_LEN - CMDSTR_MW_LEN ; 
+CMDSIZ_MW_MAX                 = CMDBUF_LEN - CMDSIZ_MW_LEN ; CMDSTR_MW_LEN ; 
                       
 CMDSIZ_BR_LEN                 = $07             ;       B-R Channel# Drive# TRACK# Sector#  - Block-Read (do not use)
 CMDSIZ_U1_LEN                 = $06             ;        U1 Channel# Drive# TRACK# Sector#  - Block-Read
@@ -1198,7 +1200,7 @@ IMAGE_N1                      = %00010000       ;       ! filename given        
 IMAGE_D1                      = %00100000       ;       ! Drive # specified          ! 
 IMAGE_G1                      = %01000000       ;       ! more then one file implied ! commas    before equation marks are present in the input string
 IMAGE_P1                      = %10000000       ;       ! found wildcard             ! wildcards before equation marks are present in the input string
-                                                ;       ` --------------------------¥  
+                                                ;       ` --------------------------¬¥  
 ; --------------------------------------------------------------------------------------------------------------------- ;
 ; Number of drives in searches
 ; --------------------------------------------------------------------------------------------------------------------- ;
@@ -1386,4 +1388,50 @@ DTRCK                       = CNT + $06         ;       inter SECTOR gap size
 DTRCK_MIN                     = $66             ;       min block size = 282*5/4 - 256 = 85 
 REMDR                       = CNT + $07         ;       remainder of size
 SECT                        = CNT + $08         ;       sector number counter
+; --------------------------------------------------------------------------------------------------------------------- ;
+; ROM start addresses
+; --------------------------------------------------------------------------------------------------------------------- ;
+ROMLOC                      = $c000             ;       DOS  ROM
+                            .include "1541.DOS.routines.asm" ; BASIC Routines entry points $a000-$bfff
+; --------------------------------------------------------------------------------------------------------------------- ;
+; VIAs
+; --------------------------------------------------------------------------------------------------------------------- ;
+VIA1REG                     = $1800             ; 
+                            .include "1541.VIA1.asm" ;   $1800-$180F - Serial Bus Controller Port
+VIA2REG                     = $dd00             ; 
+                            .include "1541.VIA2.asm" ;   $1C00-$1C0F - Disk Controller Port: motor and read/write head control
+; --------------------------------------------------------------------------------------------------------------------- ;
+; SYSTEM hardware vectors
+; --------------------------------------------------------------------------------------------------------------------- ;
+                            .weak               ; avoid error: duplicate definition
+; --------------------------------------------------------------------------------------------------------------------- ;
+; Any symbols defined inside can be overridden by ‚Äústronger‚Äù symbols in the same scope from outside
+; --------------------------------------------------------------------------------------------------------------------- ;
+SYSJMP                      = $ffe6             ; table: system jump vectors             (unused)
+SYSFORMT                      = SYSJMP + $00    ;        FORMAT a disk handler           $C8C6
+SYSTMOFF                      = SYSJMP + $02    ;        Turn OFF drive motor            $F98F
+; --------------------------------------------------------------------------------------------------------------------- ;
+UBLOCK                      = $ffea             ; table: adresses user commands
+UBLKUA                        = UBLOCK + $00    ;        U1 UA Vektor - Block read       $CD5F
+UBLKUB                        = UBLOCK + $02    ;        U2 UB Vektor - Block write      $CD97
+UBLKUC                        = UBLOCK + $04    ;        U3 UC Vektor - user program     $0500 - BUFF2 + $00
+UBLKUD                        = UBLOCK + $06    ;        U4 UD Vektor - user program     $0503 - BUFF2 + $03
+UBLKUE                        = UBLOCK + $08    ;        U5 UE Vektor - user program     $0506 - BUFF2 + $06
+UBLKUF                        = UBLOCK + $0a    ;        U6 UF Vektor - user program     $0509 - BUFF2 + $09
+UBLKUG                        = UBLOCK + $0c    ;        U7 UG Vektor - user program     $050C - BUFF2 + $0c
+UBLKUH                        = UBLOCK + $0e    ;        U8 UH Vektor - user program     $050F - BUFF2 + $0f
+; --------------------------------------------------------------------------------------------------------------------- ;
+NMI                         = $fffa             ;       U9 UI Vektor - NMI-Vektor        $FF01
+NMI_LO                        = NMI             ; 
+NMI_HI                        = NMI + $01       ; 
+                                                ; 
+DSKINT                      = $fffc             ;       U: UJ Vektor - RESET-Vektor      $EAA0
+DSKINT_LO                     = DSKINT          ; 
+DSKINT_HI                     = DSKINT + $01    ; 
+                                                ; 
+SYSIRQ                      = $fffe             ;       IRQ-Vektor                       $FE67
+SYSIRQ_LO                     = SYSIRQ          ; 
+SYSIRQ_HI                     = SYSIRQ + $01    ; 
+; --------------------------------------------------------------------------------------------------------------------- ;
+                            .endweak ; 
 ; --------------------------------------------------------------------------------------------------------------------- ;
