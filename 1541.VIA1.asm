@@ -96,7 +96,7 @@ VIA1DDRB_PB5                  = %00100000       ; 0=Input  1=output
 VIA1DDRB_PB6                  = %01000000       ; 0=Input  1=output
 VIA1DDRB_PB7                  = %10000000       ; 0=Input  1=output
                             
-VIA1DDRB_INI                = VIA1DDRB1_ATNA_OUT | VIA1DDRB1_CLKOUT_OUT | VIA1DDRB1_DATOUT_OUT ; ...##.#. ATN_IN / ADR_IN / CLK_IN / DAT_IN
+VIA1DDRB_INI                = VIA1DDRB_ATNA_OUT | VIA1DDRB_CLKOUT_OUT | VIA1DDRB_DATOUT_OUT ; ...##.#. ATN_IN / ADR_IN / CLK_IN / DAT_IN
 ; ------------------------------------------------------------------------------------------------------------- ;
 ; DDRA specifies which pins within the port bus are to be designated as inputs or outputs
 ;   Bit 0…7 = 0 - corresponding pin in PA acts as INPUT
