@@ -120,7 +120,7 @@ VIA2DDRB_PB5                  = %00100000       ; 0=Input  1=output
 VIA2DDRB_PB6                  = %01000000       ; 0=Input  1=output
 VIA2DDRB_PB7                  = %10000000       ; 0=Input  1=output
                             
-VIA2DDRB_INI                = DDRB2_BITRATE_OUT | DDRB2_LED_OUT | DDRB2_MOTOR_OUT | DDRB2_STEP_PHASE_OUT & DDRB2_SYNC_IN & DDRB2_PROT_IN ; SYNC_IN / DDRB2_PROT_IN
+VIA2DDRB_INI                = VIA2DDRB_BITRATE_OUT | VIA2DDRB_LED_OUT | VIA2DDRB_MOTOR_OUT | VIA2DDRB_STEP_PHASE_OUT & VIA2DDRB_SYNC_IN & VIA2DDRB_PROT_IN ; SYNC_IN / VIA2DDRB_PROT_IN
 ; ------------------------------------------------------------------------------------------------------------- ;
 ; DDRA specifies which pins within the port bus are to be designated as inputs or outputs
 ;   Bit 0…7 = 0 - corresponding pin in PA acts as INPUT
