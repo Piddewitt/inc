@@ -398,7 +398,7 @@ USRPOK_HI                     = $0312           ;         USR Address HI - defau
 ; --------------------------------------------------------------------------------------------------------------------- ;
 UNUSED                   .var $0313             ;       unused $01 byte
 ; --------------------------------------------------------------------------------------------------------------------- ;
-; KERNEL indirect vectors - initialized from table VECTSS
+; KERNAL indirect vectors - initialized from table VECTSS
 ; --------------------------------------------------------------------------------------------------------------------- ;
 CINV                        = $0314             ; Vect: hardware IRQ interrupt address
 CINV_LO                       = $0314           ; 
@@ -544,7 +544,7 @@ SPR13                         = $0340 ; - $037e ;       Data Sprite #13
 SPR14                         = $0380 ; - $03be ;       Data Sprite #14
 SPR15                         = $03c0 ; - $03fe ;       Data Sprite #15
 ; --------------------------------------------------------------------------------------------------------------------- ;
-; standard SCREEN / SPRITE pointers honz
+; standard SCREEN / SPRITE pointers
 ; --------------------------------------------------------------------------------------------------------------------- ;
 VICSCN                        = $0400           ;       default screen memory
 VICSCNX                         = VICSCN + (VICSCN_LLEN * VICSCN_NLINES) - $01 ; $07e7
@@ -611,10 +611,8 @@ SPNTR_OFFSET                  = SPNTR - VICSCN  ;       $03f8 - offset from scre
 ; --------------------------------------------------------------------------------------------------------------------- ;
 ; Common Sprite Definitions
 ; --------------------------------------------------------------------------------------------------------------------- ;
-SPRT_ROWS                     = $15             ; 21 bit height
-SPRT_COLS                     = $18             ; 24 bit width
-SPRT_SIZE_X                   = SPRT_ROWS       ; $15 bytes
-SPRT_SIZE_Y                   = SPRT_COLS / $08 ; $03 bytes
+SPRT_ROWS                     = $15             ; height
+SPRT_COLS                     = $03             ; width of each row
 SPRT_BLK_LEN                  = SPRT_SIZE_X * SPRT_SIZE_Y + $01 ; $40 (64) - used: $3f (63) - last byte always $00
 ; --------------------------------------------------------------------------------------------------------------------- ;
 
