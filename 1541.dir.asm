@@ -93,8 +93,9 @@ DIR_FILTYP_REL_LOCK                 = DIR_FILTYP_CLOSED | DIR_FILTYP_LOCKED | DI
 ; File name and start location
 ; -------------------------------------------------------------------------------------------------------------- ;
 DIR_FILE                        = $03           ;       location first block of file
-DIR_FILE_START_TRK                = $03         ;       1st TRACK number of file
-DIR_FILE_START_SEC                = $04         ;       1st SECTOR number of file
+DIR_FILE_START                    = $03         ;       1st TRACK/SECTOR number of file
+DIR_FILE_START_TRK                  = $03       ;       1st TRACK number of file
+DIR_FILE_START_SEC                  = $04       ;       1st SECTOR number of file
 DIR_FILE_NAME                   = $05           ;       filename padded with <shift_space> ($a0)
 DIR_FILE_NAME_START               = $05         ;       start of file name
 DIR_FILE_NAME_END                 = $14         ;       end of file name
@@ -129,29 +130,29 @@ DIR_FILE_SIZE_HI                  = $1f         ;
 ; -------------------------------------------------------------------------------------------------------------- ;
 DIR_FILE_ENTRY_LEN          = DIR_FILE_SIZE_HI + $01 ; 
 ; -------------------------------------------------------------------------------------------------------------- ;
-; DIR Data of the next 7 Entries - now the 1st $02 DIR_LINK bytes of each entry are unused and should be $00/$00
+; DIR Data of the next 7 Entries - the 1st $02 DIR_LINK bytes of each entry are unused and should be $00/$00
 ; -------------------------------------------------------------------------------------------------------------- ;
-DIR_FILE_ENTRY_02           = $01                                          ; 2nd file entry - bytes $20-$3f ($20)
-DIR_FILE_ENTRY_02_OFF         = DIR_FILE_ENTRY_LEN * DIR_DIR_FILE_ENTRY_02 ; entry offset
-DIR_FILE_ENTRY_02_LEN         = DIR_FILE_ENTRY_LEN                         ; entry length
-DIR_FILE_ENTRY_03           = $02                                          ; 3rd file entry - bytes $40-$5f ($20)
-DIR_FILE_ENTRY_03_OFF         = DIR_FILE_ENTRY_LEN * DIR_DIR_FILE_ENTRY_03 ; entry offset
-DIR_FILE_ENTRY_03_LEN         = DIR_FILE_ENTRY_LEN                         ; entry length
-DIR_FILE_ENTRY_04           = $03                                          ; 4th file entry - bytes $60-$7f ($20)
-DIR_FILE_ENTRY_04_OFF         = DIR_FILE_ENTRY_LEN * DIR_DIR_FILE_ENTRY_04 ; entry offset
-DIR_FILE_ENTRY_04_LEN         = DIR_FILE_ENTRY_LEN                         ; entry length
-DIR_FILE_ENTRY_05           = $04                                          ; 5th file entry - bytes $80-$9f ($20)
-DIR_FILE_ENTRY_05_OFF         = DIR_FILE_ENTRY_LEN * DIR_DIR_FILE_ENTRY_05 ; entry offset
-DIR_FILE_ENTRY_05_LEN         = DIR_FILE_ENTRY_LEN                         ; entry length
-DIR_FILE_ENTRY_06           = $05                                          ; 6th file entry - bytes $a0-$bf ($20)
-DIR_FILE_ENTRY_06_OFF         = DIR_FILE_ENTRY_LEN * DIR_DIR_FILE_ENTRY_06 ; entry offset
-DIR_FILE_ENTRY_06_LEN         = DIR_FILE_ENTRY_LEN                         ; entry length
-DIR_FILE_ENTRY_07           = $06                                          ; 7th file entry - bytes $c0-$df ($20)
-DIR_FILE_ENTRY_07_OFF         = DIR_FILE_ENTRY_LEN * DIR_DIR_FILE_ENTRY_07 ; entry offset
-DIR_FILE_ENTRY_07_LEN         = DIR_FILE_ENTRY_LEN                         ; entry length
-DIR_FILE_ENTRY_08           = $07                                          ; 8th file entry - bytes $e0-$ff ($20)
-DIR_FILE_ENTRY_08_OFF         = DIR_FILE_ENTRY_LEN * DIR_DIR_FILE_ENTRY_08 ; entry offset
-DIR_FILE_ENTRY_08_LEN         = DIR_FILE_ENTRY_LEN                         ; entry length
+DIR_FILE_ENTRY_02           = $01                                      ; 2nd file entry - bytes $20-$3f ($20)
+DIR_FILE_ENTRY_02_OFF         = DIR_FILE_ENTRY_LEN * DIR_FILE_ENTRY_02 ; entry offset
+DIR_FILE_ENTRY_02_LEN         = DIR_FILE_ENTRY_LEN                     ; entry length
+DIR_FILE_ENTRY_03           = $02                                      ; 3rd file entry - bytes $40-$5f ($20)
+DIR_FILE_ENTRY_03_OFF         = DIR_FILE_ENTRY_LEN * DIR_FILE_ENTRY_03 ; entry offset
+DIR_FILE_ENTRY_03_LEN         = DIR_FILE_ENTRY_LEN                     ; entry length
+DIR_FILE_ENTRY_04           = $03                                      ; 4th file entry - bytes $60-$7f ($20)
+DIR_FILE_ENTRY_04_OFF         = DIR_FILE_ENTRY_LEN * DIR_FILE_ENTRY_04 ; entry offset
+DIR_FILE_ENTRY_04_LEN         = DIR_FILE_ENTRY_LEN                     ; entry length
+DIR_FILE_ENTRY_05           = $04                                      ; 5th file entry - bytes $80-$9f ($20)
+DIR_FILE_ENTRY_05_OFF         = DIR_FILE_ENTRY_LEN * DIR_FILE_ENTRY_05 ; entry offset
+DIR_FILE_ENTRY_05_LEN         = DIR_FILE_ENTRY_LEN                     ; entry length
+DIR_FILE_ENTRY_06           = $05                                      ; 6th file entry - bytes $a0-$bf ($20)
+DIR_FILE_ENTRY_06_OFF         = DIR_FILE_ENTRY_LEN * DIR_FILE_ENTRY_06 ; entry offset
+DIR_FILE_ENTRY_06_LEN         = DIR_FILE_ENTRY_LEN                     ; entry length
+DIR_FILE_ENTRY_07           = $06                                      ; 7th file entry - bytes $c0-$df ($20)
+DIR_FILE_ENTRY_07_OFF         = DIR_FILE_ENTRY_LEN * DIR_FILE_ENTRY_07 ; entry offset
+DIR_FILE_ENTRY_07_LEN         = DIR_FILE_ENTRY_LEN                     ; entry length
+DIR_FILE_ENTRY_08           = $07                                      ; 8th file entry - bytes $e0-$ff ($20)
+DIR_FILE_ENTRY_08_OFF         = DIR_FILE_ENTRY_LEN * DIR_FILE_ENTRY_08 ; entry offset
+DIR_FILE_ENTRY_08_LEN         = DIR_FILE_ENTRY_LEN                     ; entry length
 ; -------------------------------------------------------------------------------------------------------------- ;
 DIR_FILE_ENTRY_MAX          = DIR_FILE_ENTRY_08 + $01                      ; max number of DIR entries
 ; -------------------------------------------------------------------------------------------------------------- ;
